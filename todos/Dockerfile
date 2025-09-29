@@ -1,6 +1,11 @@
-FROM python:3.8
-# Set working directory to /usr/src/app WORKDIR /usr/src/app
-# Copy the contents of the current local directory into the container's working directory
-ADD . /usr/src/app
-# Run a command
-CMD ["python", "hello.py"]
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
